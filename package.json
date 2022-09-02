@@ -2,9 +2,9 @@
   "name": "thor",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "/src/app.ts",
   "scripts": {
-    "build": "rimraf ./build && tsc",
+    "build": "rimraf ./build && tsc [my-framework] build --output public",
     "dev": "nodemon",
     "start": "npm-run build && node build/index.js"
   },
@@ -28,3 +28,4 @@
     "venom-bot": "^4.0.10"
   }
 }
+  
