@@ -1,4 +1,4 @@
-import express , {Request,Response} from "express"
+import express , {Request,response,Response} from "express"
 import Sender from "./sender";
 const sender = new Sender()
 
@@ -28,4 +28,9 @@ app.post('/sendText', async (req: Request, res: Response) => {
 
 app.listen(5000, () => {
     console.log("💥 server started")
+})
+
+response.json({
+     qr_code: sender.qrCode,
+    connected: sender.isConnected,
 })
