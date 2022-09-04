@@ -1,8 +1,10 @@
 import express , {Request,response,Response} from "express"
 import Sender from "./sender";
+const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server, { cors: { origin: "*" } });
 const sender = new Sender()
 
-const app = express()
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
