@@ -1,6 +1,6 @@
 import express , {Request,response,Response} from "express"
 import Sender from "./sender";
-const app = express();
+export const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, { cors: { origin: "*" } });
 const sender = new Sender()
