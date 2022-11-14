@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf ./build && tsc",
     "dev": "nodemon",
-    "start": "npm-run build && node build/index.js"
+    "start": "npx ts-node ./api/app.ts"
   },
   "author": "",
   "license": "ISC",
