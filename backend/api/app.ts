@@ -4,14 +4,14 @@ export const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server, { cors: { origin: "*" } });
 const sender = new Sender()
-
-
-app.use(express.json())
+const cors = require('cors');
+app.use(cors());
+app.use        (express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.get('/status', (req: Request, res: Response) => {
     return res.send({
-        qr_code: sender.qrCode,
+qr_code: sender.qrCode,
         connected: sender.isConnected,
     })
 })
