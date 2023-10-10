@@ -1,46 +1,82 @@
-import express , {Request,response,Response} from "express"
-import Sender from "./sender";
+import express, { Request, Response } from "express";
+const venom = require('venom-bot');
+
 export const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server, { cors: { origin: "*" } });
-const sender = new Sender()
+
 const cors = require('cors');
 app.use(cors());
-app.use        (express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+let QRCODE = "";
+let Status = "";
+let clientInstance: any;
+
+venom
+  .create({
+    session: 'session-name', // nome da sessão
+    catchQR: (base64Qrimg: any, asciiQR: any, attempts: any, urlCode: any) => {
+      QRCODE = base64Qrimg;
+    },
+    statusFind: (statusSession: any) => {
+      Status = statusSession;
+    },
+    updatesLog: true,
+  })
+  .then((client: any) => {
+    clientInstance = client;
+    start(client);
+  })
+  .catch((error: any) => {
+    console.log(error);
+  });
+
+function start(client: any) {
+  client.onMessage((message: any) => {
+    if (message.from === 'Teste' && message.isGroupMsg === false) {
+      client
+        .sendText(message.from, '...')
+        .then((result: any) => {
+          console.log('Result: ', result); // objeto de sucesso retornado
+        })
+        .catch((error: any) => {
+          console.error('Erro ao enviar: ', error); // objeto de erro retornado
+        });
+    }
+  });
+}
 
 app.get('/status', (req: Request, res: Response) => {
-    return res.send({
-qr_code: sender.qrCode,
-        connected: sender.isConnected,
-    })
-})
+  return res.send({
+    qr_code: QRCODE,
+    connected: Status,
+  });
+});
 
-app.post('/sendText', async (req: Request, res: Response) => {
-    const { number, message } = req.body
-    try {
-        await sender.sendText(number, message)
-        
-        return  res.status(200).json({ status: "Messagem enviada"})
-    } catch (error) {
-        console.error("error", error)
-        res.status(500).json({status: "error", message:error})
-    }
-})
+app.post('/sendMessage', async (req: Request, res: Response) => {
+  const { message, phoneNumber } = req.body;
 
-app.post('/sendImage', async (req: Request, res: Response) => {
-    const { number, image, filename,caption } = req.body
-     try {
-        await sender.sendImage(number, image, filename,caption)
-        
-        return  res.status(200).json({ status: "Messagem enviada"})
-    } catch (error) {
-        console.error("error", error)
-        res.status(500).json({status: "error", message:error})
-    }
-})
+  try {
+    // Verifique se o cliente WhatsApp está pronto para enviar mensagens
+   
+      // Envie a mensagem usando o cliente WhatsApp
+       clientInstance.sendText(phoneNumber + "@c.us", message);
+
+      console.log('Mensagem enviada:', message);
+      console.log('Número de telefone:', phoneNumber);
+    console.log(clientInstance);
+      // Responda à solicitação com uma mensagem de confirmação ou o que for apropriado
+      res.send('Mensagem enviada com sucesso');
+    // } else {
+    //   // Se o cliente não estiver conectado, retorne uma resposta indicando que o envio não é possível
+    //   res.status(400).send('Cliente WhatsApp não está conectado');
+    // }
+  } catch (error) {
+    console.error('Erro ao enviar mensagem:', error);
+    res.status(500).send('Erro ao enviar mensagem');
+  }
+});
 
 app.listen(5000, () => {
-    console.log("💥 server started")
-})
-
+  console.log("💥 Servidor iniciado na porta 5000");
+});
