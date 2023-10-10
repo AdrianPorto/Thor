@@ -72,15 +72,19 @@ export default function Home() {
   const sendMessage = async () => {
     const data = {
       phoneNumber: number,
+      message: message,
     };
     try {
       await axios.post("http://localhost:5000/sendMessage", data);
     } catch (error) {
       console.error("Erro na requisição:", error);
     }
-
+    // const dataButton = {
+    //   phoneNumber: number,
+    //   message: message,
+    // };
     try {
-      await axios.post("http://localhost:5000/sendButtons", data);
+      await axios.post("http://localhost:5000/sendButtons");
     } catch (error) {
       console.error("Erro na requisição:", error);
     }

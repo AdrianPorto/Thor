@@ -90,13 +90,17 @@ app.post('/sendButtons', async (req: Request, res: Response) => {
  
   try {
 
-    const buttons = [
+const buttons = [
   {
-
-      displayText: "Text of eeeeeee 1"
-      
+    buttonText: {
+      displayText: "Text of Button 1"
+      }
     },
-
+  {
+    buttonText: {
+      displayText: "Text of Button 2"
+      }
+    }
   ]
 
     clientInstance.sendButtons(phoneNumber, 'text', buttons, 'text')
