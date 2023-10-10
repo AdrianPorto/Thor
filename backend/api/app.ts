@@ -43,7 +43,12 @@ function start(client: any) {
           console.error('Erro ao enviar: ', error); // objeto de erro retornado
         });
     }
+
+    
   });
+
+
+
 }
 
 app.get('/status', (req: Request, res: Response) => {
@@ -64,7 +69,7 @@ app.post('/sendMessage', async (req: Request, res: Response) => {
 
       console.log('Mensagem enviada:', message);
       console.log('Número de telefone:', phoneNumber);
-    console.log(clientInstance);
+    // console.log(clientInstance);
       // Responda à solicitação com uma mensagem de confirmação ou o que for apropriado
       res.send('Mensagem enviada com sucesso');
     // } else {
@@ -77,6 +82,60 @@ app.post('/sendMessage', async (req: Request, res: Response) => {
   }
 });
 
+app.post('/sendButtons', async (req: Request, res: Response) => {
+  const { phoneNumber } = req.body;
+
+
+
+ 
+  try {
+
+    const buttons = [
+  {
+
+      displayText: "Text of eeeeeee 1"
+      
+    },
+
+  ]
+
+    clientInstance.sendButtons(phoneNumber, 'text', buttons, 'text')
+
+      console.log('Número de telefone:', phoneNumber);
+    console.log(clientInstance);
+
+      res.send('Link enviada com sucesso');
+
+  } catch (error) {
+    console.error('Erro ao enviar mensagem:', error);
+    res.status(500).send('Erro ao enviar mensagem');
+  }
+});
+
+app.get('/chats', async (req: Request, res: Response) => {
+
+
+ try {
+    const chats = await clientInstance.getAllChats();
+     return res.send(chats);
+  
+  } catch (error) {
+    console.error('Erro ao enviar mensagem:', error);
+    res.status(500).send('Erro ao enviar mensagem');
+  }
+});
+
+
+
+
+ 
+
+
+
+
+
 app.listen(5000, () => {
   console.log("💥 Servidor iniciado na porta 5000");
 });
+
+
