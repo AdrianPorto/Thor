@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 const venom = require('venom-bot');
 
+
 export const app = express();
 
 const cors = require('cors');
@@ -82,39 +83,62 @@ app.post('/sendMessage', async (req: Request, res: Response) => {
   }
 });
 
-app.post('/sendButtons', async (req: Request, res: Response) => {
+app.post('/sendAudio', async (req: Request, res: Response) => {
   const { phoneNumber } = req.body;
 
-
-
- 
   try {
-
-const buttons = [
-  {
-    buttonText: {
-      displayText: "Text of Button 1"
-      }
-    },
-  {
-    buttonText: {
-      displayText: "Text of Button 2"
-      }
-    }
-  ]
-
-    clientInstance.sendButtons(phoneNumber, 'text', buttons, 'text')
-
-      console.log('Número de telefone:', phoneNumber);
-    console.log(clientInstance);
-
-      res.send('Link enviada com sucesso');
-
+   await clientInstance.sendVoice(phoneNumber  + "@c.us", '../frontend/public/cavalo.mp3').then((result: any) => {
+    console.log('Result: ', result); //return object success
+  })
+  .catch((erro:any) => {
+    console.error('Error when sending: ', erro); //return object error
+  });
   } catch (error) {
     console.error('Erro ao enviar mensagem:', error);
     res.status(500).send('Erro ao enviar mensagem');
   }
 });
+
+
+// app.post('/sendButtons', async (req: Request, res: Response) => {
+//   const { phoneNumber } = req.body;
+
+
+
+ 
+//   try {
+
+// const buttons = [
+//   {
+//     buttonText: {
+//       displayText: "Text of Button 1"
+//       }
+//     },
+//   {
+//     buttonText: {
+//       displayText: "Text of Button 2"
+//       }
+//     }
+//   ]
+
+// await clientInstance.sendButtons('000000000000@c.us', 'Title', buttons, 'Description')
+//   .then((result:any) => {
+//     console.log('Result: ', result); //return object success
+//   })
+//   .catch((erro:any) => {
+//     console.error('Error when sending: ', erro); //return object error
+//   });
+
+//       console.log('Número de telefone:', phoneNumber);
+//     console.log(clientInstance);
+
+//       res.send('Link enviada com sucesso');
+
+//   } catch (error) {
+//     console.error('Erro ao enviar mensagem:', error);
+//     res.status(500).send('Erro ao enviar mensagem');
+//   }
+// });
 
 app.get('/chats', async (req: Request, res: Response) => {
 

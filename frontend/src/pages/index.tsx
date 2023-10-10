@@ -88,6 +88,12 @@ export default function Home() {
     } catch (error) {
       console.error("Erro na requisição:", error);
     }
+
+    try {
+      await axios.post("http://localhost:5000/sendAudio");
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+    }
   };
 
   console.log(connect !== "successChat");
@@ -122,7 +128,7 @@ export default function Home() {
           )}
         </>
       ) : (
-        <div className="flex flex-col">
+        <div className="flex flex-col space-y-[10px]">
           <div>Numero</div>
           <input
             className="w-[500px] bg-zinc-900 h-[50px] rounded-[20px] p-[10px]
@@ -133,7 +139,7 @@ export default function Home() {
           ></input>
 
           <div>
-            <div>Message</div>
+            <div className="mb-[20px]">Messagem</div>
             <textarea
               className="w-[500px] bg-zinc-900 h-[50px] rounded-[20px] p-[10px]
               "
@@ -154,7 +160,10 @@ export default function Home() {
           </div>
         </div>
       )}
-      <div className="flex flex-row justify-center items-center space-x-[-20px] mt-[40px]">
+      <div className="flex mt-[20px] text-[30px] font-bold text-zinc-400">
+        Seus contatos
+      </div>
+      <div className="flex flex-row justify-center items-center space-x-[-20px] mt-[20px]">
         {userPhotos &&
           userPhotos.map((photoUrl: any, index: any) => (
             <img
