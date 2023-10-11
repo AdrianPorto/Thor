@@ -70,11 +70,11 @@ export default function Home() {
   }, []);
 
   const sendMessage = async () => {
-    const data = {
-      phoneNumber: number,
-      message: message,
-    };
     try {
+      const data = {
+        phoneNumber: number,
+        message: message,
+      };
       await axios.post("http://localhost:5000/sendMessage", data);
     } catch (error) {
       console.error("Erro na requisição:", error);
@@ -83,14 +83,17 @@ export default function Home() {
     //   phoneNumber: number,
     //   message: message,
     // };
-    try {
-      await axios.post("http://localhost:5000/sendButtons");
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-    }
+    // try {
+    //   await axios.post("http://localhost:5000/sendButtons");
+    // } catch (error) {
+    //   console.error("Erro na requisição:", error);
+    // }
 
     try {
-      await axios.post("http://localhost:5000/sendAudio");
+      const data = {
+        phoneNumber: number,
+      };
+      await axios.post("http://localhost:5000/sendAudio64", data);
     } catch (error) {
       console.error("Erro na requisição:", error);
     }
