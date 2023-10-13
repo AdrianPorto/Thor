@@ -42,18 +42,15 @@ export default function Home() {
       try {
         const response = await axios.get("http://localhost:5000/chats");
         const first5Items = response.data.slice(0, 5); // Pega os primeiros 5 itens
-
         const photos = []; // Crie uma matriz para armazenar as URLs das fotos
 
         for (let i = 0; i < first5Items.length; i++) {
           const item = first5Items[i];
           const profilePicUrl = item.contact.profilePicThumbObj.img;
-
+          console.log(item);
           photos.push(profilePicUrl); // Adicione a URL da imagem à matriz 'photos'
 
-          if (profilePicUrl) {
-            console.log(`Foto do ${item.name}: ${profilePicUrl}`);
-          } else {
+          if (!profilePicUrl) {
             console.log(
               `Não há foto disponível para ${item.contact.shortName}`
             );
@@ -67,6 +64,39 @@ export default function Home() {
     };
 
     getChats();
+  }, []);
+
+  useEffect(() => {
+    console.log("teste");
+    const getAllMessagesChat = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/chats/554491756930"
+        );
+        const first5Items = response;
+        console.log(first5Items);
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+      }
+    };
+
+    getAllMessagesChat();
+  }, []);
+
+  useEffect(() => {
+    const getAllMessagesChats = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/chats/all/554491756930"
+        );
+        const first5Items = response;
+        console.log(first5Items);
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+      }
+    };
+
+    getAllMessagesChats();
   }, []);
 
   const sendMessage = async () => {
@@ -93,7 +123,28 @@ export default function Home() {
       const data = {
         phoneNumber: number,
       };
-      await axios.post("http://localhost:5000/sendAudio64", data);
+      await axios.post("http://localhost:5000/sendAudio", data);
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+    }
+
+    try {
+      const data = {
+        phoneNumber: number,
+        nameFile: "Cavalo",
+      };
+      await axios.post("http://localhost:5000/sendImage", data);
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+    }
+
+    try {
+      const data = {
+        phoneNumber: number,
+
+        nameFile: "Cavalo",
+      };
+      await axios.post("http://localhost:5000/sendImage64", data);
     } catch (error) {
       console.error("Erro na requisição:", error);
     }
@@ -166,11 +217,11 @@ export default function Home() {
       <div className="flex mt-[20px] text-[30px] font-bold text-zinc-400">
         Seus contatos
       </div>
-      <div className="flex flex-row justify-center items-center space-x-[-20px] mt-[20px]">
+      <div className="flex flex-row justify-center items-center space-x-[-20px] mt-[20px] ">
         {userPhotos &&
           userPhotos.map((photoUrl: any, index: any) => (
             <img
-              className="flex rounded-full shadow-sm shadow-zinc-300 overflow-hidden  select-none"
+              className="flex rounded-full shadow-sm  shadow-zinc-300 overflow-hidden  select-none"
               key={index}
               src={photoUrl}
               alt={`Foto ${index}`}
