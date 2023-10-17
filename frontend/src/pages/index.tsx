@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Inter, Philosopher } from "next/font/google";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { FaSearch } from "react-icons/fa";
 
 const inter = Inter({ subsets: ["latin"] });
 import { BsFillCheckCircleFill } from "react-icons/bs";
@@ -182,52 +183,70 @@ export default function Home() {
           )}
         </>
       ) : (
-        <div className="flex flex-col space-y-[10px]">
-          <div>Numero</div>
-          <input
-            className="w-[500px] bg-zinc-900 h-[50px] rounded-[20px] p-[10px]
-              "
-            onChange={(e) => {
-              setNumber(parseInt(e.target.value));
-            }}
-          ></input>
+        // <div className="flex flex-col space-y-[10px]">
+        //   <div>Numero</div>
+        //   <input
+        //     className="w-[500px] bg-zinc-900 h-[50px] rounded-[20px] p-[10px]
+        //       "
+        //     onChange={(e) => {
+        //       setNumber(parseInt(e.target.value));
+        //     }}
+        //   ></input>
 
-          <div>
-            <div className="mb-[20px]">Messagem</div>
-            <textarea
-              className="w-[500px] bg-zinc-900 h-[50px] rounded-[20px] p-[10px]
-              "
-              onChange={(e) => {
-                setMessage(e.target.value);
-              }}
-            ></textarea>
+        //   <div>
+        //     <div className="mb-[20px]">Messagem</div>
+        //     <textarea
+        //       className="w-[500px] bg-zinc-900 h-[50px] rounded-[20px] p-[10px]
+        //       "
+        //       onChange={(e) => {
+        //         setMessage(e.target.value);
+        //       }}
+        //     ></textarea>
+        //   </div>
+        //   <div className="mt-[20px]">
+        //     <button
+        //       className="flex w-full bg-green-600 p-[10px]  rounded-[20px] justify-center text-[20px] "
+        //       onClick={() => {
+        //         sendMessage();
+        //       }}
+        //     >
+        //       Enviar
+        //     </button>
+        //   </div>
+
+        // </div>
+
+        <div>
+          <div className="">
+            <div></div>
+            <div></div>
           </div>
-          <div className="mt-[20px]">
-            <button
-              className="flex w-full bg-green-600 p-[10px]  rounded-[20px] justify-center text-[20px] "
-              onClick={() => {
-                sendMessage();
-              }}
-            >
-              Enviar
-            </button>
+          <div className="flex flex-row space-x-[2vw]">
+            <div className="rounded-[2vw] w-[250px] h-[450px] pl-[6px] pr-[6px] border-[#7E7E7E] border-[0.5px] bg-[#252525]">
+              <div className="flex flex-row p-[20px] items-center border-b-[0.5px]  text-white text-[30px] w-full justify-center space-x-[80px]">
+                <div>Chats</div>
+                <div className="hover:bg-zinc-700 cursor-pointer p-[9px] text-[15px] rounded-full">
+                  <FaSearch></FaSearch>
+                </div>
+              </div>
+              <div>
+                <div className="flex flex-col  mt-[20px] ">
+                  {userPhotos &&
+                    userPhotos.map((photoUrl: any, index: any) => (
+                      <img
+                        className="flex rounded-full shadow-sm w-[50px]  shadow-zinc-300 overflow-hidden  select-none"
+                        key={index}
+                        src={photoUrl}
+                        alt={`Foto ${index}`}
+                      />
+                    ))}
+                </div>
+              </div>
+            </div>
+            <div className="rounded-[2vw] w-[970px] h-[450px] border-[#7E7E7E] border-[0.5px] bg-[#252525]"></div>
           </div>
         </div>
       )}
-      <div className="flex mt-[20px] text-[30px] font-bold text-zinc-400">
-        Seus contatos
-      </div>
-      <div className="flex flex-row justify-center items-center space-x-[-20px] mt-[20px] ">
-        {userPhotos &&
-          userPhotos.map((photoUrl: any, index: any) => (
-            <img
-              className="flex rounded-full shadow-sm  shadow-zinc-300 overflow-hidden  select-none"
-              key={index}
-              src={photoUrl}
-              alt={`Foto ${index}`}
-            />
-          ))}
-      </div>
         
     </main>
   );

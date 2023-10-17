@@ -33,20 +33,20 @@ venom
   });
 
 function start(client: any) {
-  client.onMessage((message: any) => {
-    if (message.from === 'Teste' && message.isGroupMsg === false) {
-      client
-        .sendText(message.from, '...')
-        .then((result: any) => {
-          console.log('Result: ', result); // objeto de sucesso retornado
-        })
-        .catch((error: any) => {
-          console.error('Erro ao enviar: ', error); // objeto de erro retornado
-        });
-    }
+  // client.onMessage((message: any) => {
+  //   if (message.from === 'Teste' && message.isGroupMsg === false) {
+  //     client
+  //       .sendText(message.from, '...')
+  //       .then((result: any) => {
+  //         console.log('Result: ', result); // objeto de sucesso retornado
+  //       })
+  //       .catch((error: any) => {
+  //         console.error('Erro ao enviar: ', error); // objeto de erro retornado
+  //       });
+  //   }
 
     
-  });
+  // });
 
 
 
