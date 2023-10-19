@@ -13,6 +13,13 @@ export default function Home() {
   const [message, setMessage] = useState("");
   const [number, setNumber] = useState(0);
   const [userPhotos, setUserPhotos] = useState<any>([]);
+  const [chats, setChats] = useState([
+    {
+      nome: "",
+      mensagem: "",
+      fotoPerfil: "",
+    },
+  ]);
   useEffect(() => {
     const getStatus = async () => {
       try {
@@ -42,23 +49,34 @@ export default function Home() {
     const getChats = async () => {
       try {
         const response = await axios.get("http://localhost:5000/chats");
-        const first5Items = response.data.slice(0, 5); // Pega os primeiros 5 itens
-        const photos = []; // Crie uma matriz para armazenar as URLs das fotos
+        const first5Items = response.data.slice(0, 10);
+
+        const photos = [];
+        const chatData = []; // Crie um array para armazenar os dados dos chats
 
         for (let i = 0; i < first5Items.length; i++) {
           const item = first5Items[i];
           const profilePicUrl = item.contact.profilePicThumbObj.img;
-          console.log(item);
-          photos.push(profilePicUrl); // Adicione a URL da imagem à matriz 'photos'
+          photos.push(profilePicUrl);
 
           if (!profilePicUrl) {
             console.log(
               `Não há foto disponível para ${item.contact.shortName}`
             );
           }
+
+          // Preencha o array 'chatData' com os dados de cada chat
+          chatData.push({
+            nome: item.contact.name,
+            mensagem: item.últimaMensagem,
+            fotoPerfil: profilePicUrl,
+          });
         }
 
-        setUserPhotos(photos); // Configure 'userPhotos' com a matriz completa de URLs de fotos
+        // Atualize o estado 'chats' com o array de dados dos chats
+        setChats(chatData);
+
+        setUserPhotos(photos);
       } catch (error) {
         console.error("Erro na requisição:", error);
       }
@@ -217,33 +235,44 @@ export default function Home() {
         // </div>
 
         <div>
-          <div className="">
-            <div></div>
-            <div></div>
+          <div className="flex justify-end space-x-[20px] items-center mb-[25px]">
+            <div className="w-[50px] h-[50px] bg-white "></div>
+            <div className="w-[50px] h-[50px] bg-white "></div>
+            <div className="w-[80px] h-[80px] bg-white rounded-full "></div>
           </div>
           <div className="flex flex-row space-x-[2vw]">
-            <div className="rounded-[2vw] w-[250px] h-[450px] pl-[6px] pr-[6px] border-[#7E7E7E] border-[0.5px] bg-[#252525]">
-              <div className="flex flex-row p-[20px] items-center border-b-[0.5px]  text-white text-[30px] w-full justify-center space-x-[80px]">
+            <div className="rounded-[2vw] w-[250px] h-[510px] pl-[6px] overflow-hidden    border-[#7E7E7E] border-[0.5px] bg-[#252525]">
+              <div
+                className="flex flex-row p-[20px] items-center border-b-[0.5px] w-[234px]
+                border-[#ABABAB]   text-white text-[30px]  justify-center space-x-[80px]"
+              >
                 <div>Chats</div>
                 <div className="hover:bg-zinc-700 cursor-pointer p-[9px] text-[15px] rounded-full">
                   <FaSearch></FaSearch>
                 </div>
               </div>
-              <div>
-                <div className="flex flex-col  mt-[20px] ">
-                  {userPhotos &&
-                    userPhotos.map((photoUrl: any, index: any) => (
+              <div className="scroll-container scroll-content  h-full ">
+                <div className="flex flex-col ">
+                  {chats.map((chat, index) => (
+                    <div className="flex flex-row space-x-[20px] border-b-[0.5px] border-[#ABABAB] p-[15px] m-0">
                       <img
-                        className="flex rounded-full shadow-sm w-[50px]  shadow-zinc-300 overflow-hidden  select-none"
-                        key={index}
-                        src={photoUrl}
-                        alt={`Foto ${index}`}
+                        src={chat.fotoPerfil}
+                        className="flex rounded-full shadow-sm w-[100px]  shadow-zinc-300 overflow-hidden select-none"
+                        alt={`Foto de ${chat.nome}`}
                       />
-                    ))}
+
+                      <div>
+                        <div className="w-[120px]  text-[15px]">
+                          {chat.nome}
+                        </div>
+                        {chat.mensagem}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-            <div className="rounded-[2vw] w-[970px] h-[450px] border-[#7E7E7E] border-[0.5px] bg-[#252525]"></div>
+            <div className="rounded-[2vw] w-[970px] h-[510px] border-[#7E7E7E] border-[0.5px] bg-[#252525]"></div>
           </div>
         </div>
       )}

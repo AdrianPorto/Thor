@@ -25,3 +25,30 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+/* Estilize o conteúdo dentro do contêiner que deslizará com a barra de rolagem */
+.scroll-container {
+  overflow-y: visible; /* Adiciona a barra de rolagem apenas quando necessário */
+  overflow-x: hidden; /* Esconde a barra de rolagem horizontal */
+  position: relative;
+}
+
+/* Estilize a barra de rolagem */
+.scroll-content::-webkit-scrollbar {
+  width: 4px; /* Largura da barra de rolagem */
+}
+
+.scroll-content::-webkit-scrollbar-thumb {
+  background-color: #888; /* Cor de fundo do indicador da barra de rolagem */
+  border-radius: 100px; /* Raio das bordas do indicador */
+}
+
+.scroll-content::-webkit-scrollbar-track {
+  background: transparent; /* Cor de fundo da área de rolagem (transparente) */
+}
+
+/* Estilos do scroll para navegadores não-WebKit (opcional) */
+.scroll-content {
+  scrollbar-width: thin; /* Largura da barra de rolagem para navegadores não-WebKit */
+  scrollbar-color: #888 transparent; /* Cor da barra de rolagem e área de rolagem (transparente) */
+}
