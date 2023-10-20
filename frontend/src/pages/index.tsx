@@ -3,6 +3,7 @@ import { Inter, Philosopher } from "next/font/google";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaSearch } from "react-icons/fa";
+import { CiMenuKebab } from "react-icons/ci";
 
 const inter = Inter({ subsets: ["latin"] });
 import { BsFillCheckCircleFill } from "react-icons/bs";
@@ -11,7 +12,7 @@ export default function Home() {
   const [connect, setConnect] = useState("");
   const [show, setShow] = useState(true);
   const [message, setMessage] = useState("");
-  const [number, setNumber] = useState(0);
+  const [number, setNumber] = useState(44988609457);
   const [userPhotos, setUserPhotos] = useState<any>([]);
   const [chats, setChats] = useState([
     {
@@ -92,31 +93,29 @@ export default function Home() {
         const response = await axios.get(
           "http://localhost:5000/chats/554491756930"
         );
-        const first5Items = response;
-        console.log(first5Items);
+
+        console.log(response);
       } catch (error) {
         console.error("Erro na requisição:", error);
       }
     };
 
     getAllMessagesChat();
-  }, []);
+  });
 
-  useEffect(() => {
-    const getAllMessagesChats = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/chats/all/554491756930"
-        );
-        const first5Items = response;
-        console.log(first5Items);
-      } catch (error) {
-        console.error("Erro na requisição:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const getAllMessagesChats = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         "http://localhost:5000/chats/all/554491756930"
+  //       );
+  //     } catch (error) {
+  //       console.error("Erro na requisição:", error);
+  //     }
+  //   };
 
-    getAllMessagesChats();
-  }, []);
+  //   getAllMessagesChats();
+  // }, []);
 
   const sendMessage = async () => {
     try {
@@ -143,14 +142,11 @@ export default function Home() {
         phoneNumber: number,
       };
       await axios.post("http://localhost:5000/sendAudio", data);
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-    }
+    } catch (error) {}
 
     try {
       const data = {
         phoneNumber: number,
-        nameFile: "Cavalo",
       };
       await axios.post("http://localhost:5000/sendImage", data);
     } catch (error) {
@@ -160,8 +156,6 @@ export default function Home() {
     try {
       const data = {
         phoneNumber: number,
-
-        nameFile: "Cavalo",
       };
       await axios.post("http://localhost:5000/sendImage64", data);
     } catch (error) {
@@ -235,13 +229,13 @@ export default function Home() {
         // </div>
 
         <div>
-          <div className="flex justify-end space-x-[20px] items-center mb-[25px]">
-            <div className="w-[50px] h-[50px] bg-white "></div>
-            <div className="w-[50px] h-[50px] bg-white "></div>
+          <div className="flex justify-end space-x-[20px] items-center mb-[10px]">
+            <div className="w-[50px] h-[50px]  rounded-[10px]  bg-white "></div>
+            <div className="w-[50px] h-[50px]  rounded-[10px] bg-white "></div>
             <div className="w-[80px] h-[80px] bg-white rounded-full "></div>
           </div>
           <div className="flex flex-row space-x-[2vw]">
-            <div className="rounded-[2vw] w-[250px] h-[510px] pl-[6px] overflow-hidden    border-[#7E7E7E] border-[0.5px] bg-[#252525]">
+            <div className="rounded-[2vw] w-[250px] h-[510px] pl-[6px]   overflow-hidden  border-[#7E7E7E] border-[0.5px] bg-[#252525]">
               <div
                 className="flex flex-row p-[20px] items-center border-b-[0.5px] w-[234px]
                 border-[#ABABAB]   text-white text-[30px]  justify-center space-x-[80px]"
@@ -251,13 +245,13 @@ export default function Home() {
                   <FaSearch></FaSearch>
                 </div>
               </div>
-              <div className="scroll-container scroll-content  h-full ">
-                <div className="flex flex-col ">
+              <div className="scroll-container scroll-content   h-[83.9%]  flex flex-1 ">
+                <div className="flex flex-col    flex-1   ">
                   {chats.map((chat, index) => (
                     <div className="flex flex-row space-x-[20px] border-b-[0.5px] border-[#ABABAB] p-[15px] m-0">
                       <img
                         src={chat.fotoPerfil}
-                        className="flex rounded-full shadow-sm w-[100px]  shadow-zinc-300 overflow-hidden select-none"
+                        className="flex rounded-full  w-[60px]  overflow-hidden select-none"
                         alt={`Foto de ${chat.nome}`}
                       />
 
@@ -272,7 +266,27 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="rounded-[2vw] w-[970px] h-[510px] border-[#7E7E7E] border-[0.5px] bg-[#252525]"></div>
+            <div className="rounded-[2vw] w-[970px] h-[510px] p-[10px] border-[#7E7E7E] border-[0.5px] bg-[#252525]">
+              <div className="flex w-full border-b h-[75px]   border-[#7E7E7E]">
+                <div className="flex flex-row">
+                  <div className="flex flex-row space-x-[20px]   p-[10px]">
+                    <img
+                      src={chats[0].fotoPerfil}
+                      className="flex rounded-full  w-[50px]  overflow-hidden select-none"
+                    />
+                    <div className="flex flex-col">
+                      <div>{chats[0].nome}</div>
+                      <div className="text-[10px] mt-[3px] text-green-600">
+                        Online
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className=" flex flex-1 w-full text-[30px]  justify-end items-center">
+                  <CiMenuKebab onClick={sendMessage}></CiMenuKebab>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       )}
