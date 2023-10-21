@@ -25,7 +25,7 @@ const ListChats: React.FC<Props> = ({ chats, setIdChat }) => {
               className="flex flex-row space-x-[20px]  cursor-pointer rounded-[15px] mr-[5px] hover:bg-[#363535] p-[15px] m-0"
               onClick={() => {
                 setIdChat(index);
-              }}
+               }}
             >
               <img
                 src={chat.fotoPerfil}

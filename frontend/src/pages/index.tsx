@@ -30,28 +30,36 @@ export default function Home() {
   ]);
 
   useEffect(() => {
+    let isRunning = true;
+
     const getStatus = async () => {
       try {
         const response = await axios.get("http://localhost:5000/status");
-        setQrcode(response.data.qr_code);
-        setConnect(response.data.connected);
 
-        if (response.data.connected === "successChat") {
-          clearInterval(intervalId);
+        if (isRunning) {
+          setQrcode(response.data.qr_code);
+          setConnect(response.data.connected);
 
-          setTimeout(() => {
-            setShow(false); // Define a variável como false após 5 segundos
-          }, 5000);
+          if (response.data.connected === "successChat") {
+            clearInterval(intervalId);
+            setTimeout(() => {
+              setShow(false); // Define a variável como false após 5 segundos
+            }, 5000);
+          }
         }
       } catch (error) {
         console.error("Erro na requisição:", error);
       }
     };
+
     getStatus();
 
-    const intervalId = setInterval(getStatus, 5000);
+    const intervalId = setInterval(getStatus, 200);
 
-    return () => clearInterval(intervalId);
+    return () => {
+      isRunning = false;
+      clearInterval(intervalId);
+    };
   }, []);
 
   useEffect(() => {
@@ -129,7 +137,7 @@ export default function Home() {
     };
 
     getAllMessagesChat();
-  }, [Idchat]);
+  }, [Idchat, messages]);
 
   console.log(connect !== "successChat");
   console.log(connect);

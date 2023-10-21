@@ -9,22 +9,28 @@ interface Props {
 
 const Messages: React.FC<Props> = ({ messages }) => {
   return (
-    <div className="w-full h-[75%] bg-gray-600">
-      {Array.isArray(messages) ? (
-        messages
-          .slice(0, 10)
-          .map((message: any, index: any) =>
-            message.fromMe == true ? (
-              <div className="bg-red-500  w-[400px] flex absolute right-[30px] h-fit p-[5px]">
+    <div className="w-full space-y-[10px] p-[20px] overflow-y-auto overflow-x-hidden flex flex-col h-full scroll-container scroll-content">
+      {messages[0] != "" ? (
+        <>
+          {Array.isArray(messages) ? (
+            messages.map((message, index) => (
+              <div
+                className={
+                  message.fromMe
+                    ? "bg-[#3F3F3F] w-[400px] ml-auto p-[8px] rounded-[10px] text-white"
+                    : "bg-white w-[400px] p-2 rounded-bl-[10px] rounded-tr-[10px] text-black"
+                }
+              >
                 {message.content}
               </div>
-            ) : (
-              <div>{message.content}</div>
-            )
-          )
+            ))
+          ) : (
+            // Handle the case when messages is not an array
+            <div>Carregando mensagens...</div>
+          )}
+        </>
       ) : (
-        // Handle the case when messages is not an array
-        <div>Messages is not an array</div>
+        <div>Carregando mensagens...</div>
       )}
     </div>
   );

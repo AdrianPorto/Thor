@@ -22,6 +22,7 @@ const MessageBar: React.FC<Props> = ({ number }) => {
         message: message,
       };
       await axios.post("http://localhost:5000/sendMessage", data);
+      setMessage("");
     } catch (error) {
       console.error("Erro na requisição:", error);
     }
@@ -61,13 +62,21 @@ const MessageBar: React.FC<Props> = ({ number }) => {
   return (
     <div className="w-full h-[35px] bg-black rounded-full flex  flex-row items-center p-[10px] mt-[10px]">
       <FaPaperclip></FaPaperclip>
+
       <input
-        className="flex w-full bg-black border-white ml-[20px] mr-[5px] pl-[5px]"
+        className="flex w-full bg-black border-white ml-[20px] mr-[5px] pl-[5px] focus:outline-none border-none ring-0"
         placeholder="Digite aqui..."
+        value={message}
         onChange={(e) => {
           setMessage(e.target.value);
         }}
+        onKeyPress={(e) => {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        }}
       ></input>
+
       <div className="space-x-[10px] flex flex-row ">
         <FaMicrophone></FaMicrophone>
         <FaPaperPlane
