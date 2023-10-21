@@ -2,25 +2,33 @@ import Image from "next/image";
 import { Inter, Philosopher } from "next/font/google";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { FaSearch } from "react-icons/fa";
-import { CiMenuKebab } from "react-icons/ci";
+import {
+  FaMicrophone,
+  FaPaperPlane,
+  FaPaperclip,
+  FaSearch,
+} from "react-icons/fa";
 
 const inter = Inter({ subsets: ["latin"] });
 import { BsFillCheckCircleFill } from "react-icons/bs";
+import ListChats from "@/components/List/ListChats";
+import Chat from "@/components/Chats/Chat";
 export default function Home() {
   const [qrcode, setQrcode] = useState("");
   const [connect, setConnect] = useState("");
   const [show, setShow] = useState(true);
-  const [message, setMessage] = useState("");
-  const [number, setNumber] = useState(44988609457);
+  const [messages, setMessages] = useState("");
+  const [Idchat, setIdChat] = useState<any>(0);
   const [userPhotos, setUserPhotos] = useState<any>([]);
   const [chats, setChats] = useState([
     {
       nome: "",
       mensagem: "",
       fotoPerfil: "",
+      numero: 0,
     },
   ]);
+
   useEffect(() => {
     const getStatus = async () => {
       try {
@@ -68,9 +76,13 @@ export default function Home() {
 
           // Preencha o array 'chatData' com os dados de cada chat
           chatData.push({
-            nome: item.contact.name,
+            nome:
+              item.contact.name === null || item.contact.name === undefined
+                ? item.id.user
+                : item.contact.name,
             mensagem: item.últimaMensagem,
             fotoPerfil: profilePicUrl,
+            numero: item.id.user,
           });
         }
 
@@ -86,23 +98,6 @@ export default function Home() {
     getChats();
   }, []);
 
-  useEffect(() => {
-    console.log("teste");
-    const getAllMessagesChat = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/chats/554491756930"
-        );
-
-        console.log(response);
-      } catch (error) {
-        console.error("Erro na requisição:", error);
-      }
-    };
-
-    getAllMessagesChat();
-  });
-
   // useEffect(() => {
   //   const getAllMessagesChats = async () => {
   //     try {
@@ -112,56 +107,29 @@ export default function Home() {
   //     } catch (error) {
   //       console.error("Erro na requisição:", error);
   //     }
-  //   };
+  //   };'
 
   //   getAllMessagesChats();
   // }, []);
 
-  const sendMessage = async () => {
-    try {
-      const data = {
-        phoneNumber: number,
-        message: message,
-      };
-      await axios.post("http://localhost:5000/sendMessage", data);
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-    }
-    // const dataButton = {
-    //   phoneNumber: number,
-    //   message: message,
-    // };
-    // try {
-    //   await axios.post("http://localhost:5000/sendButtons");
-    // } catch (error) {
-    //   console.error("Erro na requisição:", error);
-    // }
+  useEffect(() => {
+    console.log("teste");
+    const getAllMessagesChat = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/chats/${chats[Idchat].numero}`
+        );
 
-    try {
-      const data = {
-        phoneNumber: number,
-      };
-      await axios.post("http://localhost:5000/sendAudio", data);
-    } catch (error) {}
+        console.log(chats[Idchat].numero);
+        console.log(response.data);
+        setMessages(response.data);
+      } catch (error) {
+        console.error("Erro na requisição:", error);
+      }
+    };
 
-    try {
-      const data = {
-        phoneNumber: number,
-      };
-      await axios.post("http://localhost:5000/sendImage", data);
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-    }
-
-    try {
-      const data = {
-        phoneNumber: number,
-      };
-      await axios.post("http://localhost:5000/sendImage64", data);
-    } catch (error) {
-      console.error("Erro na requisição:", error);
-    }
-  };
+    getAllMessagesChat();
+  }, [Idchat]);
 
   console.log(connect !== "successChat");
   console.log(connect);
@@ -235,58 +203,8 @@ export default function Home() {
             <div className="w-[80px] h-[80px] bg-white rounded-full "></div>
           </div>
           <div className="flex flex-row space-x-[2vw]">
-            <div className="rounded-[2vw] w-[250px] h-[510px] pl-[6px]   overflow-hidden  border-[#7E7E7E] border-[0.5px] bg-[#252525]">
-              <div
-                className="flex flex-row p-[20px] items-center border-b-[0.5px] w-[234px]
-                border-[#ABABAB]   text-white text-[30px]  justify-center space-x-[80px]"
-              >
-                <div>Chats</div>
-                <div className="hover:bg-zinc-700 cursor-pointer p-[9px] text-[15px] rounded-full">
-                  <FaSearch></FaSearch>
-                </div>
-              </div>
-              <div className="scroll-container scroll-content   h-[83.9%]  flex flex-1 ">
-                <div className="flex flex-col    flex-1   ">
-                  {chats.map((chat, index) => (
-                    <div className="flex flex-row space-x-[20px] border-b-[0.5px] border-[#ABABAB] p-[15px] m-0">
-                      <img
-                        src={chat.fotoPerfil}
-                        className="flex rounded-full  w-[60px]  overflow-hidden select-none"
-                        alt={`Foto de ${chat.nome}`}
-                      />
-
-                      <div>
-                        <div className="w-[120px]  text-[15px]">
-                          {chat.nome}
-                        </div>
-                        {chat.mensagem}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div className="rounded-[2vw] w-[970px] h-[510px] p-[10px] border-[#7E7E7E] border-[0.5px] bg-[#252525]">
-              <div className="flex w-full border-b h-[75px]   border-[#7E7E7E]">
-                <div className="flex flex-row">
-                  <div className="flex flex-row space-x-[20px]   p-[10px]">
-                    <img
-                      src={chats[0].fotoPerfil}
-                      className="flex rounded-full  w-[50px]  overflow-hidden select-none"
-                    />
-                    <div className="flex flex-col">
-                      <div>{chats[0].nome}</div>
-                      <div className="text-[10px] mt-[3px] text-green-600">
-                        Online
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className=" flex flex-1 w-full text-[30px]  justify-end items-center">
-                  <CiMenuKebab onClick={sendMessage}></CiMenuKebab>
-                </div>
-              </div>
-            </div>
+            <ListChats chats={chats} setIdChat={setIdChat}></ListChats>
+            <Chat Idchat={Idchat} chats={chats} messages={messages}></Chat>
           </div>
         </div>
       )}
