@@ -2,9 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 
 import { CiMenuKebab } from "react-icons/ci";
-import MessageBar from "../MessageBar";
-import Messages from "../Messages";
-import ContactBar from "../ContactBar";
+import MessageBar from "./MessageBar";
+import Messages from "./Messages";
+import ContactBar from "./ContactBar";
 
 interface Props {
   Idchat: any;
@@ -14,7 +14,7 @@ interface Props {
 
 // import { Container } from './styles';
 
-const Chat: React.FC<Props> = ({ Idchat, chats, messages }) => {
+const Chats: React.FC<Props> = ({ Idchat, chats, messages }) => {
   const [number, setNumber] = useState(5544988609457);
 
   return (
@@ -32,4 +32,4 @@ const Chat: React.FC<Props> = ({ Idchat, chats, messages }) => {
   );
 };
 
-export default Chat;
+export default Chats;

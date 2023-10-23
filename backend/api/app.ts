@@ -290,7 +290,37 @@ app.get('/chats/all/:number', async (req, res) => {
   }
 });
 
+app.get('/chats/more/:number', async (req, res) => {
+  try {
+    const chatNumber = req.params.number;
+    const allMessages = await clientInstance.loadEarlierMessages(
+      chatNumber + '@c.us'
+    );
 
+
+   
+    return res.send(allMessages);
+  } catch (error) {
+    console.error('Erro ao buscar mensagens:', error);
+    res.status(500).send('Erro ao buscar mensagens');
+  }
+});
+
+app.get('/chat/:number', async (req, res) => {
+  try {
+    const chatNumber = req.params.number;
+    const allMessages = await clientInstance.getChat(
+      chatNumber + '@c.us'
+    );
+
+
+   
+    return res.send(allMessages);
+  } catch (error) {
+    console.error('Erro ao buscar mensagens:', error);
+    res.status(500).send('Erro ao buscar mensagens');
+  }
+});
 
  
 

@@ -12,7 +12,7 @@ import {
 const inter = Inter({ subsets: ["latin"] });
 import { BsFillCheckCircleFill } from "react-icons/bs";
 import ListChats from "@/components/List/ListChats";
-import Chat from "@/components/Chats/Chat";
+import Chat from "@/components/Chats";
 export default function Home() {
   const [qrcode, setQrcode] = useState("");
   const [connect, setConnect] = useState("");
@@ -121,15 +121,12 @@ export default function Home() {
   // }, []);
 
   useEffect(() => {
-    console.log("teste");
     const getAllMessagesChat = async () => {
       try {
         const response = await axios.get(
           `http://localhost:5000/chats/${chats[Idchat].numero}`
         );
 
-        console.log(chats[Idchat].numero);
-        console.log(response.data);
         setMessages(response.data);
       } catch (error) {
         console.error("Erro na requisição:", error);
@@ -137,10 +134,7 @@ export default function Home() {
     };
 
     getAllMessagesChat();
-  }, [Idchat, messages]);
-
-  console.log(connect !== "successChat");
-  console.log(connect);
+  }, [Idchat]);
 
   return (
     <main
