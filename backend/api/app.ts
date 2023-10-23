@@ -262,7 +262,7 @@ app.get('/chats/:number', async (req, res) => {
   try {
     const chatNumber = req.params.number;
     const allMessages = await clientInstance.getAllMessagesInChat(
-      chatNumber + '@c.us'
+      chatNumber + '@c.us' 
     );
 
 

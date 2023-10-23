@@ -18,7 +18,7 @@ export default function Home() {
   const [connect, setConnect] = useState("");
   const [show, setShow] = useState(true);
   const [messages, setMessages] = useState("");
-  const [Idchat, setIdChat] = useState<any>(0);
+  const [Idchat, setIdChat] = useState<any>(-1);
   const [userPhotos, setUserPhotos] = useState<any>([]);
   const [chats, setChats] = useState([
     {
